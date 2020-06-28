@@ -1,7 +1,6 @@
 package merr
 
 import (
-	"errors"
 	"fmt"
 	"testing"
 )
@@ -9,20 +8,14 @@ import (
 func TestNew(t *testing.T) {
 	err := New("TestCode", "I am message")
 	fmt.Println(err)
+
 }
 
-func TestUnmarshal(t *testing.T) {
-	err := New("TestCode", "I am message")
-	c := Unmarshal(err)
-	fmt.Println(c.All())
-	fmt.Println(c.MCode())
-	fmt.Println(c.MText())
+func testReturnErr() error {
+	return New(1000, "some error")
+}
 
-	fmt.Println("=============================")
-
-	err2 := errors.New("errors without marshal")
-	c2 := Unmarshal(err2)
-	fmt.Println(c2.All())
-	fmt.Println(c2.MCode())
-	fmt.Println(c2.MText())
+func TestM_Error(t *testing.T) {
+	err := testReturnErr()
+	fmt.Println(err.(*M))
 }

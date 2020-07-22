@@ -1,12 +1,13 @@
 package merr
 
 import (
+	"encoding/json"
 	"fmt"
 )
 
 type M struct {
-	Code interface{}
-	Text string
+	Code interface{} `json:"code"`
+	Text string      `json:"text"`
 }
 
 func (m *M) Error() string {
@@ -15,4 +16,16 @@ func (m *M) Error() string {
 
 func New(code interface{}, text string) *M {
 	return &M{Code: code, Text: text}
+}
+
+func UnMarshal(msg string) *M {
+	m := new(M)
+	err := json.Unmarshal([]byte(msg), &m)
+	if err != nil {
+		return &M{
+			Code: "Unknown",
+			Text: msg,
+		}
+	}
+	return m
 }
